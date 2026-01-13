@@ -1,0 +1,59 @@
+# =========================
+# Node / Package managers
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.local
+.env.development
+.env.production
+
+# =========================
+# Build output
+# =========================
+dist/
+build/
+
+# =========================
+# Prisma
+# =========================
+prisma/dev.db
+prisma/dev.db-journal
+
+# Prisma Client (gerado)
+node_modules/.prisma/
+
+# =========================
+# Docker
+# =========================
+.docker/
+docker-data/
+*.pid
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+!.vscode/extensions.json
+
+# =========================
+# Tests / Coverage
+# =========================
+coverage/
+
+# =========================
+# Temporary files
+# =========================
+*.log
+*.tmp

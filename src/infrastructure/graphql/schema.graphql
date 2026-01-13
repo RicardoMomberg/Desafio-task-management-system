@@ -1,0 +1,125 @@
+# ============================================
+# SCALARS
+# ============================================
+
+scalar DateTime
+
+# ============================================
+# ENUMS
+# ============================================
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+# ============================================
+# TYPES
+# ============================================
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Task {
+  id: ID!
+  title: String!
+  description: String
+  status: TaskStatus!
+  userId: ID!
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type TaskConnection {
+  tasks: [Task!]!
+  totalCount: Int!
+  hasMore: Boolean!
+}
+
+type AuthPayload {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+# ============================================
+# INPUTS
+# ============================================
+
+input CreateTaskInput {
+  title: String!
+  description: String
+  status: TaskStatus
+}
+
+input UpdateTaskInput {
+  title: String
+  description: String
+  status: TaskStatus
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  name: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input TaskFiltersInput {
+  status: TaskStatus
+}
+
+input PaginationInput {
+  limit: Int = 20
+  offset: Int = 0
+}
+
+# ============================================
+# QUERIES
+# ============================================
+
+type Query {
+  # User queries
+  me: User!
+  
+  # Task queries
+  task(id: ID!): Task!
+  tasks(filters: TaskFiltersInput, pagination: PaginationInput): TaskConnection!
+}
+
+# ============================================
+# MUTATIONS
+# ============================================
+
+type Mutation {
+  # Auth mutations
+  register(input: RegisterInput!): AuthPayload!
+  login(input: LoginInput!): AuthPayload!
+  refreshToken(refreshToken: String!): AuthPayload!
+  
+  # Task mutations
+  createTask(input: CreateTaskInput!): Task!
+  updateTask(id: ID!, input: UpdateTaskInput!): Task!
+  deleteTask(id: ID!): Boolean!
+}
+
+# ============================================
+# SUBSCRIPTIONS
+# ============================================
+
+type Subscription {
+  taskCreated(userId: ID!): Task!
+  taskUpdated(userId: ID!): Task!
+  taskDeleted(userId: ID!): ID!
+}
