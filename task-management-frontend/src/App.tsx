@@ -1,26 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ApolloProvider } from '@apollo/client';
+import { apolloClient } from './infrastructure/graphql/client';
+import { AuthProvider } from './application/context/AuthContext';
+import { AppRoutes } from './presentation/routes/AppRoutes';
+import { ErrorBoundary } from './presentation/components/common/ErrorBoundary';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ErrorBoundary>
+      <ApolloProvider client={apolloClient}>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </ApolloProvider>
+    </ErrorBoundary>
   );
-}
+};
 
 export default App;

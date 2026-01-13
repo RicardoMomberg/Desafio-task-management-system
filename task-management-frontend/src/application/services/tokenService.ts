@@ -1,4 +1,5 @@
-import jwtDecode from 'jwt-decode';
+// src/application/services/tokenService.ts
+import { jwtDecode } from 'jwt-decode';
 
 interface DecodedToken {
   userId: string;

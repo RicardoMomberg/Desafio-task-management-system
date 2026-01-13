@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Input } from '../common/Input';
@@ -16,24 +16,39 @@ const taskSchema = z.object({
 type TaskFormData = z.infer<typeof taskSchema>;
 
 interface TaskFormProps {
-  task?: Task;
+  task?: Task | null;
   onSubmit: (data: TaskFormData) => Promise<void>;
   onCancel: () => void;
   loading?: boolean;
 }
 
 export const TaskForm: React.FC<TaskFormProps> = ({ task, onSubmit, onCancel, loading }) => {
+  // Mapear task (se existir) para os defaultValues esperados pelo form.
+  // Garantir que description seja string ('' quando null)
+  const defaultValues: TaskFormData = task
+    ? {
+        title: task.title,
+        description: task.description ?? '',
+        status: task.status
+      }
+    : {
+        title: '',
+        description: '',
+        status: TaskStatus.TODO
+      };
+
   const { register, handleSubmit, formState: { errors } } = useForm<TaskFormData>({
     resolver: zodResolver(taskSchema),
-    defaultValues: task || {
-      title: '',
-      description: '',
-      status: TaskStatus.TODO
-    }
+    defaultValues
   });
 
+  // Criar um SubmitHandler tipado explicitamente para o react-hook-form
+  const submitHandler: SubmitHandler<TaskFormData> = async (data) => {
+    await onSubmit(data);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
       <Input
         label="Título"
         {...register('title')}

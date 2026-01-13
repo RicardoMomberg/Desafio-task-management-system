@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { User, LoginInput, RegisterInput } from '../../domain/models/Auth';
+import { LoginInput, RegisterInput } from '../../domain/models/Auth';
 import { LOGIN, REGISTER } from '../../infrastructure/graphql/mutations/authMutations';
 import { GET_ME } from '../../infrastructure/graphql/queries/authQueries';
 import { tokenService } from '../services/tokenService';
 import { apolloClient } from '../../infrastructure/graphql/client';
+import { User } from '../../domain/models/User';
 
 interface AuthContextData {
   user: User | null;
